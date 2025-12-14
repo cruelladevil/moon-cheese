@@ -13,6 +13,9 @@ export function getExchangeRate() {
   return http.get<GetExchangeRate>(API_PATH.EXCHANGE_RATE);
 }
 
+/**
+ * 달러 베이스, 환율은 1달러 기준.
+ */
 export function useExchangeRate() {
   return useQuery({
     queryKey: [API_PATH.EXCHANGE_RATE],
