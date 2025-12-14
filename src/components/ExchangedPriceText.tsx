@@ -1,7 +1,7 @@
 import { useExchangeRate } from '@/remote/getExchangeRate';
 import { useCurrency } from '@/store/currency';
 
-const krwFormatter = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' });
+const krwFormatter = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW', maximumFractionDigits: 0 });
 const usdFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 /**
