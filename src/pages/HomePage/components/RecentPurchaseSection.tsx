@@ -6,6 +6,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ErrorSection from '@/components/ErrorSection';
 import { Suspense } from 'react';
 import { useRecentProducts } from '@/remote/getRecentProductList';
+import { countBy, uniqBy } from 'es-toolkit';
 
 function RecentPurchaseSection() {
   return (
@@ -48,33 +49,19 @@ function RecentPurchaseProducts() {
     data: { recentProducts },
   } = useRecentProducts();
 
+  const recentProductsUniqById = uniqBy(recentProducts, product => product.id);
+  const recentProductCountById = countBy(recentProducts, product => product.id);
+
   return (
     <>
-      {recentProducts.map(product => (
-        <RecentProduct key={product.id} {...product} />
-      ))}
-      <Flex
-        css={{
-          gap: 4,
-        }}
-      >
-        <styled.img
-          src="/moon-cheese-images/cheese-1-1.jpg"
-          alt="item"
-          css={{
-            w: '60px',
-            h: '60px',
-            objectFit: 'cover',
-            rounded: 'xl',
-          }}
+      {recentProductsUniqById.map(product => (
+        <RecentProduct
+          key={product.id}
+          thumbnail={product.thumbnail}
+          name={product.name}
+          price={product.price * recentProductCountById[product.id]}
         />
-        <Flex flexDir="column" gap={1}>
-          <Text variant="B2_Medium">월레스의 오리지널 웬슬리데일</Text>
-          <Text variant="H1_Bold">
-            <ExchangedPriceText price={12.99} />
-          </Text>
-        </Flex>
-      </Flex>
+      ))}
     </>
   );
 }
