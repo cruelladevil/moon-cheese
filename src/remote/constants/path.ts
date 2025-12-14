@@ -5,4 +5,5 @@ export const API_PATH = {
   EXCHANGE_RATE: '/api/exchange-rate',
   ME: '/api/me',
   GRADE_POINT_LIST: '/api/grade/point',
+  RECENT_PRODUCT_LIST: '/api/recent/product/list',
 } as const;

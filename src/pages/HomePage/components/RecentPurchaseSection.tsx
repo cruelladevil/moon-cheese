@@ -5,6 +5,7 @@ import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorSection from '@/components/ErrorSection';
 import { Suspense } from 'react';
+import { useRecentProducts } from '@/remote/getRecentProductList';
 
 function RecentPurchaseSection() {
   return (
@@ -43,8 +44,15 @@ function RecentPurchaseSection() {
 export default RecentPurchaseSection;
 
 function RecentPurchaseProducts() {
+  const {
+    data: { recentProducts },
+  } = useRecentProducts();
+
   return (
     <>
+      {recentProducts.map(product => (
+        <RecentProduct key={product.id} {...product} />
+      ))}
       <Flex
         css={{
           gap: 4,
@@ -67,29 +75,29 @@ function RecentPurchaseProducts() {
           </Text>
         </Flex>
       </Flex>
-
-      <Flex
-        css={{
-          gap: 4,
-        }}
-      >
-        <styled.img
-          src="/moon-cheese-images/cheese-2-1.jpg"
-          alt="item"
-          css={{
-            w: '60px',
-            h: '60px',
-            objectFit: 'cover',
-            rounded: 'xl',
-          }}
-        />
-        <Flex flexDir="column" gap={1}>
-          <Text variant="B2_Medium">그랜드 데이 아웃 체다</Text>
-          <Text variant="H1_Bold">
-            <ExchangedPriceText price={14.87} />
-          </Text>
-        </Flex>
-      </Flex>
     </>
+  );
+}
+
+function RecentProduct({ thumbnail, name, price }: { thumbnail: string; name: string; price: number }) {
+  return (
+    <Flex css={{ gap: 4 }}>
+      <styled.img
+        src={thumbnail}
+        alt="item"
+        css={{
+          w: '60px',
+          h: '60px',
+          objectFit: 'cover',
+          rounded: 'xl',
+        }}
+      />
+      <Flex flexDir="column" gap={1}>
+        <Text variant="B2_Medium">{name}</Text>
+        <Text variant="H1_Bold">
+          <ExchangedPriceText price={price} />
+        </Text>
+      </Flex>
+    </Flex>
   );
 }
